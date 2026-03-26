@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout 2026q1') {
+        stage('Checkout 2026Q1') {
             steps {
-                git branch: '2026q1', url: 'https://github.com/127rutu/docker-repos.git'
+                git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
             }
         }
 
@@ -19,9 +19,9 @@ pipeline {
             }
         }
 
-        stage('Checkout 2026q2') {
+        stage('Checkout 2026Q2') {
             steps {
-                git branch: '2026q2', url: 'https://github.com/127rutu/docker-repos.git'
+                git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
             }
         }
 
@@ -36,9 +36,9 @@ pipeline {
             }
         }
 
-        stage('Checkout 2026q3') {
+        stage('Checkout 2026Q3') {
             steps {
-                git branch: '2026q3', url: 'https://github.com/127rutu/docker-repos.git'
+                git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
             }
         }
 
