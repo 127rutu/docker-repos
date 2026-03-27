@@ -9,7 +9,7 @@ pipeline {
                 script {
                     sh '''
                     docker rm -f c1 || true
-                    docker run -d --name c1 -p 8081:80 httpd:latest
+                    docker run -d --name c1 -p 80:80 httpd:latest
                     docker exec c1 rm -rf /usr/local/apache2/htdocs/*
                     docker cp . c1:/usr/local/apache2/htdocs/
                     '''
@@ -23,7 +23,7 @@ pipeline {
                 script {
                     sh '''
                     docker rm -f c2 || true
-                    docker run -d --name c2 -p 8082:80 httpd:latest
+                    docker run -d --name c2 -p 90:80 httpd:latest
                     docker exec c2 rm -rf /usr/local/apache2/htdocs/*
                     docker cp . c2:/usr/local/apache2/htdocs/
                     '''
@@ -44,5 +44,6 @@ pipeline {
                 }
             }
         }
+
     }
 }
