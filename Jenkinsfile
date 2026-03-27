@@ -11,8 +11,8 @@ pipeline {
                 sh '''
                 docker rm -f c1 || true
                 docker run -d --name c1 -p 80:80 httpd:latest
-                scp ./index.html root@slave-1:/tmp/index.html
-                ssh root@slave-1 "docker cp /tmp/index.html c1:/usr/local/apache2/htdocs/index.html"
+                scp ./index.html root@172.31.44.36:/tmp/index.html
+                ssh root@172.31.44.36 "docker cp /tmp/index.html c1:/usr/local/apache2/htdocs/index.html"
                 '''
             }
         }
@@ -24,8 +24,8 @@ pipeline {
                 sh '''
                 docker rm -f c2 || true
                 docker run -d --name c2 -p 90:80 httpd:latest
-                scp ./index.html root@slave-1:/tmp/index.html
-                ssh root@slave-1 "docker cp /tmp/index.html c2:/usr/local/apache2/htdocs/index.html"
+                scp ./index.html root@172.31.44.36:/tmp/index.html
+                ssh root@172.31.44.36 "docker cp /tmp/index.html c2:/usr/local/apache2/htdocs/index.html"
                 '''
             }
         }
@@ -37,8 +37,8 @@ pipeline {
                 sh '''
                 docker rm -f c3 || true
                 docker run -d --name c3 -p 8090:80 httpd:latest
-                scp ./index.html root@slave-1:/tmp/index.html
-                ssh root@slave-1 "docker cp /tmp/index.html c3:/usr/local/apache2/htdocs/index.html"
+                scp ./index.html root@172.31.44.36:/tmp/index.html
+                ssh root@172.31.44.36 "docker cp /tmp/index.html c3:/usr/local/apache2/htdocs/index.html"
                 '''
             }
         }
@@ -51,8 +51,8 @@ pipeline {
                 sh '''
                 docker rm -f c1 || true
                 docker run -d --name c1 -p 80:80 httpd:latest
-                scp ./index.html root@slave-2:/tmp/index.html
-                ssh root@slave-2 "docker cp /tmp/index.html c1:/usr/local/apache2/htdocs/index.html"
+                scp ./index.html root@172.31.14.233:/tmp/index.html
+                ssh root@172.31.14.233 "docker cp /tmp/index.html c1:/usr/local/apache2/htdocs/index.html"
                 '''
             }
         }
@@ -64,8 +64,8 @@ pipeline {
                 sh '''
                 docker rm -f c2 || true
                 docker run -d --name c2 -p 90:80 httpd:latest
-                scp ./index.html root@slave-2:/tmp/index.html
-                ssh root@slave-2 "docker cp /tmp/index.html c2:/usr/local/apache2/htdocs/index.html"
+                scp ./index.html root@172.31.14.233:/tmp/index.html
+                ssh root@172.31.14.233 "docker cp /tmp/index.html c2:/usr/local/apache2/htdocs/index.html"
                 '''
             }
         }
@@ -77,8 +77,8 @@ pipeline {
                 sh '''
                 docker rm -f c3 || true
                 docker run -d --name c3 -p 8090:80 httpd:latest
-                scp ./index.html root@slave-2:/tmp/index.html
-                ssh root@slave-2 "docker cp /tmp/index.html c3:/usr/local/apache2/htdocs/index.html"
+                scp ./index.html root@172.31.14.233:/tmp/index.html
+                ssh root@172.31.14.233 "docker cp /tmp/index.html c3:/usr/local/apache2/htdocs/index.html"
                 '''
             }
         }
