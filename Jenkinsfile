@@ -2,14 +2,16 @@ pipeline {
     agent any
 
     stages {
+
         stage('Deploy 2026Q1') {
             steps {
                 git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
                 script {
-                    sh 'docker rm -f c1 || true'
-                    docker.image('httpd:latest').run('--name c1 -dp 80:80')
-                    sh 'docker exec c1 mkdir -p /usr/local/apache2/htdocs/2026Q1'
-                    sh 'docker cp . c1:/usr/local/apache2/htdocs/2026Q1/'
+                    sh '''
+                    docker rm -f c1 || true
+                    docker run -d --name c1 -p 8081:80 httpd:latest
+                    docker cp . c1:/usr/local/apache2/htdocs/
+                    '''
                 }
             }
         }
@@ -18,10 +20,11 @@ pipeline {
             steps {
                 git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
                 script {
-                    sh 'docker rm -f c2 || true'
-                    docker.image('httpd:latest').run('--name c2 -dp 90:80')
-                    sh 'docker exec c2 mkdir -p /usr/local/apache2/htdocs/2026Q2'
-                    sh 'docker cp . c2:/usr/local/apache2/htdocs/2026Q2/'
+                    sh '''
+                    docker rm -f c2 || true
+                    docker run -d --name c2 -p 8082:80 httpd:latest
+                    docker cp . c2:/usr/local/apache2/htdocs/
+                    '''
                 }
             }
         }
@@ -30,10 +33,11 @@ pipeline {
             steps {
                 git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
                 script {
-                    sh 'docker rm -f c3 || true'
-                    docker.image('httpd:latest').run('--name c3 -dp 8090:80')
-                    sh 'docker exec c3 mkdir -p /usr/local/apache2/htdocs/2026Q3'
-                    sh 'docker cp . c3:/usr/local/apache2/htdocs/2026Q3/'
+                    sh '''
+                    docker rm -f c3 || true
+                    docker run -d --name c3 -p 8090:80 httpd:latest
+                    docker cp . c3:/usr/local/apache2/htdocs/
+                    '''
                 }
             }
         }
