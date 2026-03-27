@@ -31,7 +31,7 @@ pipeline {
                 git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
                 script {
                     sh 'docker rm -f c3 || true'
-                    docker.image('httpd:latest').run('--name c3 -dp 8080:80')
+                    docker.image('httpd:latest').run('--name c3 -dp 8090:80')
                     sh 'docker exec c3 mkdir -p /usr/local/apache2/htdocs/2026Q3'
                     sh 'docker cp . c3:/usr/local/apache2/htdocs/2026Q3/'
                 }
