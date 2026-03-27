@@ -1,47 +1,85 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
 
-        stage('Deploy 2026Q1') {
+        // Slave 1 deployments
+        stage('Deploy 2026Q1 on Slave 1') {
+            agent { label 'slave-1' }
             steps {
                 git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
-                script {
-                    sh '''
-                    docker rm -f c1 || true
-                    docker run -d --name c1 -p 80:80 httpd:latest
-                    docker exec c1 rm -rf /usr/local/apache2/htdocs/*
-                    docker cp . c1:/usr/local/apache2/htdocs/
-                    '''
-                }
+                sh '''
+                docker rm -f c1 || true
+                docker run -d --name c1 -p 80:80 httpd:latest
+                scp ./index.html root@slave-1:/tmp/index.html
+                ssh root@slave-1 "docker cp /tmp/index.html c1:/usr/local/apache2/htdocs/index.html"
+                '''
             }
         }
 
-        stage('Deploy 2026Q2') {
+        stage('Deploy 2026Q2 on Slave 1') {
+            agent { label 'slave-1' }
             steps {
                 git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
-                script {
-                    sh '''
-                    docker rm -f c2 || true
-                    docker run -d --name c2 -p 90:80 httpd:latest
-                    docker exec c2 rm -rf /usr/local/apache2/htdocs/*
-                    docker cp . c2:/usr/local/apache2/htdocs/
-                    '''
-                }
+                sh '''
+                docker rm -f c2 || true
+                docker run -d --name c2 -p 90:80 httpd:latest
+                scp ./index.html root@slave-1:/tmp/index.html
+                ssh root@slave-1 "docker cp /tmp/index.html c2:/usr/local/apache2/htdocs/index.html"
+                '''
             }
         }
 
-        stage('Deploy 2026Q3') {
+        stage('Deploy 2026Q3 on Slave 1') {
+            agent { label 'slave-1' }
             steps {
                 git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
-                script {
-                    sh '''
-                    docker rm -f c3 || true
-                    docker run -d --name c3 -p 8090:80 httpd:latest
-                    docker exec c3 rm -rf /usr/local/apache2/htdocs/*
-                    docker cp . c3:/usr/local/apache2/htdocs/
-                    '''
-                }
+                sh '''
+                docker rm -f c3 || true
+                docker run -d --name c3 -p 8090:80 httpd:latest
+                scp ./index.html root@slave-1:/tmp/index.html
+                ssh root@slave-1 "docker cp /tmp/index.html c3:/usr/local/apache2/htdocs/index.html"
+                '''
+            }
+        }
+
+        // Slave 2 deployments
+        stage('Deploy 2026Q1 on Slave 2') {
+            agent { label 'slave-2' }
+            steps {
+                git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
+                sh '''
+                docker rm -f c1 || true
+                docker run -d --name c1 -p 80:80 httpd:latest
+                scp ./index.html root@slave-2:/tmp/index.html
+                ssh root@slave-2 "docker cp /tmp/index.html c1:/usr/local/apache2/htdocs/index.html"
+                '''
+            }
+        }
+
+        stage('Deploy 2026Q2 on Slave 2') {
+            agent { label 'slave-2' }
+            steps {
+                git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
+                sh '''
+                docker rm -f c2 || true
+                docker run -d --name c2 -p 90:80 httpd:latest
+                scp ./index.html root@slave-2:/tmp/index.html
+                ssh root@slave-2 "docker cp /tmp/index.html c2:/usr/local/apache2/htdocs/index.html"
+                '''
+            }
+        }
+
+        stage('Deploy 2026Q3 on Slave 2') {
+            agent { label 'slave-2' }
+            steps {
+                git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
+                sh '''
+                docker rm -f c3 || true
+                docker run -d --name c3 -p 8090:80 httpd:latest
+                scp ./index.html root@slave-2:/tmp/index.html
+                ssh root@slave-2 "docker cp /tmp/index.html c3:/usr/local/apache2/htdocs/index.html"
+                '''
             }
         }
 
