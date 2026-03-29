@@ -1,10 +1,9 @@
 pipeline {
-    agent none
+    agent any   // runs on Jenkins master
 
     stages {
 
-        stage('Deploy 2026Q1 on Slave 1') {
-            agent { label 'slave-1' }
+        stage('Deploy 2026Q1') {
             steps {
                 git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
                 sh '''
@@ -16,8 +15,7 @@ pipeline {
             }
         }
 
-        stage('Deploy 2026Q2 on Slave 2') {
-            agent { label 'slave-2' }
+        stage('Deploy 2026Q2') {
             steps {
                 git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
                 sh '''
@@ -29,8 +27,7 @@ pipeline {
             }
         }
 
-        stage('Deploy 2026Q3 on Slave 3') {
-            agent { label 'slave-3' }
+        stage('Deploy 2026Q3') {
             steps {
                 git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
                 sh '''
