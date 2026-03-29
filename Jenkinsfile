@@ -1,70 +1,79 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
 
-        stage('Deploy 2026Q1') {
+        // -------------------- Slave 1 --------------------
+        stage('Deploy all branches on Slave 1') {
+            agent { label 'slave-1' }
             steps {
+                // 2026Q1
                 git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
-                script {
-                    sh '''
-                    # Remove old container & volume
-                    docker rm -f c1 || true
+                sh '''
                     docker volume rm v1 || true
-
-                    # Create new volume
                     docker volume create v1
+                    docker run --rm -v v1:/data -v $WORKSPACE:/src busybox cp /src/index.html /data/index.html
+                    docker rm -f c1 || true
+                    docker run -d --name c1 -p 80:80 -v v1:/usr/local/apache2/htdocs httpd:latest
+                '''
 
-                    # Run container with volume
-                    docker run -d --name c1 -p 80:80 \
-                      -v v1:/usr/local/apache2/htdocs/ \
-                      httpd:latest
-
-                    # Copy code into container (goes into volume)
-                    docker cp . c1:/usr/local/apache2/htdocs/
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy 2026Q2') {
-            steps {
+                // 2026Q2
                 git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
-                script {
-                    sh '''
-                    docker rm -f c2 || true
+                sh '''
                     docker volume rm v2 || true
-
                     docker volume create v2
+                    docker run --rm -v v2:/data -v $WORKSPACE:/src busybox cp /src/index.html /data/index.html
+                    docker rm -f c2 || true
+                    docker run -d --name c2 -p 90:80 -v v2:/usr/local/apache2/htdocs httpd:latest
+                '''
 
-                    docker run -d --name c2 -p 90:80 \
-                      -v v2:/usr/local/apache2/htdocs/ \
-                      httpd:latest
-
-                    docker cp . c2:/usr/local/apache2/htdocs/
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy 2026Q3') {
-            steps {
+                // 2026Q3
                 git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
-                script {
-                    sh '''
-                    docker rm -f c3 || true
+                sh '''
                     docker volume rm v3 || true
-
                     docker volume create v3
-
-                    docker run -d --name c3 -p 8090:80 \
-                      -v v3:/usr/local/apache2/htdocs/ \
-                      httpd:latest
-
-                    docker cp . c3:/usr/local/apache2/htdocs/
-                    '''
-                }
+                    docker run --rm -v v3:/data -v $WORKSPACE:/src busybox cp /src/index.html /data/index.html
+                    docker rm -f c3 || true
+                    docker run -d --name c3 -p 8090:80 -v v3:/usr/local/apache2/htdocs httpd:latest
+                '''
             }
         }
+
+        // -------------------- Slave 2 --------------------
+        stage('Deploy all branches on Slave 2') {
+            agent { label 'slave-2' }
+            steps {
+                // 2026Q1
+                git branch: '2026Q1', url: 'https://github.com/127rutu/docker-repos.git'
+                sh '''
+                    docker volume rm v1 || true
+                    docker volume create v1
+                    docker run --rm -v v1:/data -v $WORKSPACE:/src busybox cp /src/index.html /data/index.html
+                    docker rm -f c1 || true
+                    docker run -d --name c1 -p 80:80 -v v1:/usr/local/apache2/htdocs httpd:latest
+                '''
+
+                // 2026Q2
+                git branch: '2026Q2', url: 'https://github.com/127rutu/docker-repos.git'
+                sh '''
+                    docker volume rm v2 || true
+                    docker volume create v2
+                    docker run --rm -v v2:/data -v $WORKSPACE:/src busybox cp /src/index.html /data/index.html
+                    docker rm -f c2 || true
+                    docker run -d --name c2 -p 90:80 -v v2:/usr/local/apache2/htdocs httpd:latest
+                '''
+
+                // 2026Q3
+                git branch: '2026Q3', url: 'https://github.com/127rutu/docker-repos.git'
+                sh '''
+                    docker volume rm v3 || true
+                    docker volume create v3
+                    docker run --rm -v v3:/data -v $WORKSPACE:/src busybox cp /src/index.html /data/index.html
+                    docker rm -f c3 || true
+                    docker run -d --name c3 -p 8090:80 -v v3:/usr/local/apache2/htdocs httpd:latest
+                '''
+            }
+        }
+
     }
 }
